@@ -297,9 +297,7 @@ class UserMonthPaymentStateProvider implements ProviderInterface
             $userMonthPayment->remCC = $cCirc * $salaryByDay * 0.7;
             $userMonthPayment->presents = $presents;
 
-            $userMonthPayment->retTransport =
-                ($transportByDay * $userMonthPayment->presents) - $transportCCirc - $transportCCircNP -
-                $transportMalade - $transportSuspension;
+            $userMonthPayment->retTransport = $transportByDay * $userMonthPayment->presents;
 
             // Total Ret
             $userMonthPayment->totalRet =
@@ -310,9 +308,13 @@ class UserMonthPaymentStateProvider implements ProviderInterface
 
             // Total Pay
             $userMonthPayment->totalPay =
-                ($salaryByDay * $userMonthPayment->presents)- $userMonthPayment->totalRet + $userMonthPayment->prime +
+                ($salaryByDay * $userMonthPayment->presents) +
+                $userMonthPayment->prime +
                 $userMonthPayment->remCC + $userMonthPayment->remMalade +
-                $userMonthPayment->employeeIndKm;
+                $userMonthPayment->employeeIndKm - 
+                $userMonthPayment->retRetR1 -
+                $userMonthPayment->retRetR2 -
+                $userMonthPayment->debtPaid;
 
             // Net A Payer
             $userMonthPayment->nap = $userMonthPayment->totalPay + $userMonthPayment->retTransport;

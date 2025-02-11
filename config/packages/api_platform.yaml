@@ -19,6 +19,9 @@ api_platform:
         extra_properties:
             standard_put: true
             rfc_7807_compliant_errors: true
+        # state_options:
+        #     processors:
+        #         - App\State\UserPasswordHasher
     keep_legacy_inflector: false
     use_symfony_listeners: true
     swagger:

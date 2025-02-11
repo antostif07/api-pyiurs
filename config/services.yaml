@@ -29,5 +29,7 @@ services:
         tags: ['api_platform.filter']
     App\State\MeStateProvider:
         tags: [ 'api_platform.state_provider' ]
+    App\State\UserPasswordHasher:
+        tags: ['@security.password_hasher']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

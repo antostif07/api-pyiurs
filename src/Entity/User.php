@@ -13,9 +13,11 @@ use App\State\MeStateProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\State\UserPasswordHasher;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ApiResource(
     operations: [
@@ -25,8 +27,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
             provider: MeStateProvider::class
         ),
         new GetCollection(),
-        new Post(),
-        new Patch(),
+        new Post(processor: UserPasswordHasher::class),
+        new Patch(processor: UserPasswordHasher::class),
         new Delete(),
         new Get()
     ],
@@ -65,6 +67,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:write'])]
     private ?string $name = null;
 
+    #[Groups(['user:write'])]
+    #[SerializedName('password')]
     private ?string $plainPassword = null;
 
     /**
@@ -73,6 +77,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Assignment::class, inversedBy: 'users')]
     #[Groups(['user:read', 'user:write'])]
     private Collection $companies;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['user:read', 'user:write'])]
+    private ?Employee $employee = null;
 
     public function __construct()
     {
@@ -197,6 +205,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeCompany(Assignment $company): static
     {
         $this->companies->removeElement($company);
+
+        return $this;
+    }
+
+    public function getEmployee(): ?Employee
+    {
+        return $this->employee;
+    }
+
+    public function setEmployee(?Employee $employee): static
+    {
+        $this->employee = $employee;
 
         return $this;
     }

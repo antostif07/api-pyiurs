@@ -43,12 +43,12 @@ class Employee
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['employee:read', 'attendance:read', 'employeePayment:read', 'employee-prime:read',])]
+    #[Groups(['employee:read', 'attendance:read', 'employeePayment:read', 'employee-prime:read', "user:read"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['employee:read', 'employee:write', 'attendance:read', 'employeePayment:read', 'employee-prime:read'])]
+    #[Groups(['employee:read', 'employee:write', 'attendance:read', 'employeePayment:read', 'employee-prime:read', "user:read"])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
