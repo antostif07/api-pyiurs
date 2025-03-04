@@ -17,7 +17,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 )]
 
 #[ApiFilter(SearchFilter::class, properties: [
-    'month' => 'ipartial',
+    'month' => 'ipartial', 'employee.id' => 'exact'
 ])]
 #[ORM\Entity(repositoryClass: EmployeePaymentRepository::class)]
 class EmployeePayment

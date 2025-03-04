@@ -12,7 +12,7 @@ api_platform:
     error_formats:
         jsonproblem: ['application/json']
     defaults:
-        pagination_items_per_page: 30
+        pagination_items_per_page: 50
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
